@@ -4,6 +4,18 @@
 ![PWA](https://img.shields.io/badge/PWA-enabled-success.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
+## 🌐 Demo en producción
+
+- Aplicación: https://rutakids-app.web.app/
+- Sitio Axon App: https://www.axonapp.com.co/
+
+## ℹ️ Información rápida
+
+- **Aplicación hecha por:** Axon App
+- **Uso actual:** Gratuito
+- **Licencia del repositorio:** MIT
+- **Stack principal:** HTML5, CSS3, JavaScript (Vanilla), Supabase (Auth + PostgreSQL), Firebase Hosting
+
 **RutaKids** es una aplicación web profesional (PWA) para la gestión integral de rutas escolares, control de pagos, asistencia y administración de información de estudiantes.
 
 ## ✨ Características Principales
