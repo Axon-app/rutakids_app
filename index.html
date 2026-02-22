@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RutaKids - Gestión profesional de rutas escolares">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="RutaKids">
+  <meta property="og:description" content="Gestión profesional de rutas escolares">
+  <meta property="og:image" content="https://rutakids-app.web.app/assets/logo/logoruta1.PNG">
+  <meta property="og:image:alt" content="Logo RutaKids">
+  <meta property="og:url" content="https://rutakids-app.web.app/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RutaKids">
+  <meta name="twitter:description" content="Gestión profesional de rutas escolares">
+  <meta name="twitter:image" content="https://rutakids-app.web.app/assets/logo/logoruta1.PNG">
+  <meta name="theme-color" content="#3b5bdb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RutaKids">
+  
+  <title>RutaKids — Gestión de Rutas Escolares</title>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/animations.css">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- iOS Icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/pwa-icon-180.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/logo/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/favicon-16.png">
+  <link rel="shortcut icon" href="assets/logo/favicon-32.png" type="image/png">
+</head>
+<body>
+  <div class="splash-screen" id="splash-screen" aria-live="polite" aria-label="Cargando RutaKids">
+    <img src="assets/logo/logoletras.png" alt="RutaKids" class="splash-logo">
+    <div class="splash-loader" aria-hidden="true"></div>
+    <p class="splash-text">RutaKids · Gestión de rutas escolares</p>
+  </div>
+  <div class="auth-screen" id="auth-screen" style="display:none">
+    <div class="auth-card">
+      <div class="auth-brand-banner-wrap">
+        <img src="assets/logo/logoletras.png" alt="Logo RutaKids" class="auth-brand-banner">
+      </div>
+      <h2>RutaKids</h2>
+      <p class="auth-sub">Inicia sesión para guardar tu información en la nube.</p>
+
+      <div class="form-error" id="auth-error" style="display:none"></div>
+
+      <div class="form-group">
+        <label class="form-label">Nombre (solo para registro)</label>
+        <input class="form-input" id="auth-name" placeholder="Ej. María González" autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Correo</label>
+        <input class="form-input" id="auth-email" type="email" placeholder="correo@ejemplo.com" autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Contraseña</label>
+        <div class="auth-pass-wrap">
+          <input class="form-input" id="auth-password" type="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password">
+          <button class="auth-pass-toggle" id="auth-pass-toggle" type="button" aria-label="Mostrar contraseña" title="Mostrar contraseña">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <div class="auth-meta">
+          <button class="auth-link" id="auth-forgot-btn" type="button">¿Olvidaste tu contraseña?</button>
+        </div>
+      </div>
+
+      <div class="auth-actions">
+        <button class="btn btn-primary" id="auth-login-btn"><i class="fas fa-right-to-bracket"></i> Ingresar</button>
+        <button class="btn btn-ghost" id="auth-register-btn"><i class="fas fa-user-plus"></i> Registrarme</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+    
+    <!-- ══════════════════════════════ -->
+    <!-- SIDEBAR -->
+    <!-- ══════════════════════════════ -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">
+          <img src="assets/logo/logoruta1.PNG" alt="Logo RutaKids" class="brand-logo sidebar-brand-logo">
+        </div>
+        <div class="logo-text">RutaKids<small>Gestión Escolar</small></div>
+      </div>
+      
+      <div class="nav-section">
+        <span class="nav-label">Principal</span>
+        <div class="nav-item active" data-view="dashboard">
+          <span class="ni">🏠</span>Dashboard
+        </div>
+        <div class="nav-item" data-view="calendario">
+          <span class="ni"><i class="fas fa-calendar-alt"></i></span>Calendario
+        </div>
+        <div class="nav-item" data-view="hijos">
+          <span class="ni">👶</span>Mis Hijos
+        </div>
+        <div class="nav-item" id="nav-add-child">
+          <span class="ni"><i class="fas fa-user-plus"></i></span>Agregar hijo
+        </div>
+      </div>
+      
+      <div class="nav-section">
+        <span class="nav-label">Finanzas</span>
+        <div class="nav-item" data-view="pagos">
+          <span class="ni">💳</span>Pagos
+          <span class="nbadge nb-warn" id="sb-pay">0</span>
+        </div>
+        <div class="nav-item" data-view="resumen">
+          <span class="ni">📊</span>Resúmenes
+        </div>
+      </div>
+      
+      <div class="nav-section">
+        <span class="nav-label">Sistema</span>
+        <div class="nav-item" data-view="notificaciones">
+          <span class="ni">🔔</span>Notificaciones
+          <span class="nbadge nb-danger" id="sb-notif">0</span>
+        </div>
+        <div class="nav-item" data-view="configuracion">
+          <span class="ni">⚙️</span>Configuración
+        </div>
+      </div>
+      
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-av" id="sidebar-user-initials">MG</div>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:600;color:#fff" id="sidebar-user-name">María González</div>
+            <div style="font-size:10px;color:rgba(255,255,255,.45)">Usuario</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="logout-btn" title="Cerrar sesión">Salir</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ══════════════════════════════ -->
+    <!-- MAIN CONTENT -->
+    <!-- ══════════════════════════════ -->
+    <main class="main">
+      <div class="main-brand-banner-wrap">
+        <img src="assets/logo/logoletras.png" alt="Logo RutaKids" class="main-brand-banner">
+      </div>
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="page-title">
+          <h1 id="page-h">Panel Principal 👋</h1>
+          <p id="page-sub">Cargando...</p>
+        </div>
+        <div class="topbar-user-mobile" id="topbar-user-mobile" aria-label="Usuario actual">
+          <div class="topbar-user-av" id="topbar-user-initials">MG</div>
+          <div class="topbar-user-meta">
+            <div class="topbar-user-name" id="topbar-user-name">María González</div>
+            <div class="topbar-user-role">Usuario</div>
+          </div>
+        </div>
+        <div class="tb-actions">
+          <div class="search-box" id="search-box"><i class="fas fa-search"></i> &nbsp;Buscar...</div>
+          <div class="icon-btn" id="theme-toggle" title="Cambiar tema">
+            <span id="theme-icon"><i class="fas fa-moon"></i></span>
+          </div>
+          <div class="icon-btn" id="notif-btn">
+            <span><i class="fas fa-bell"></i></span>
+            <div class="notif-dot" id="notif-dot" style="display:none"></div>
+          </div>
+          <button class="btn btn-ghost btn-sm mobile-only" id="logout-btn-mobile" title="Cerrar sesión"><i class="fas fa-right-from-bracket"></i> Salir</button>
+          <button class="btn btn-ghost" id="refresh-app-btn" style="display:none"><i class="fas fa-rotate"></i> Actualizar app</button>
+          <button class="btn btn-primary" id="add-child-btn"><i class="fas fa-plus"></i> Agregar hijo</button>
+          <button class="btn btn-primary" id="export-btn-topbar" style="display:none"><i class="fas fa-file-pdf"></i> Exportar informe</button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- DASHBOARD VIEW -->
+      <!-- ══════════════════════════════ -->
+      <div class="view active" id="view-dashboard">
+        <div class="metrics-row" id="metrics-row"></div>
+        
+        <div class="content-grid">
+          <div class="card">
+            <div class="premium-calendar" id="cal-premium">
+              <div class="cal-left">
+                <div class="cal-left-top">
+                  <div class="cal-left-day" id="cal-left-dayname"></div>
+                  <div class="cal-left-num" id="cal-left-daynum"></div>
+                  <div class="cal-left-month" id="cal-left-monthyear"></div>
+                </div>
+                <button class="cal-left-btn" id="cal-today-btn">Ir a hoy</button>
+              </div>
+              <div class="cal-right">
+                <div class="cal-right-head">
+                  <div class="cal-right-title"><i class="fas fa-calendar-alt"></i> <span id="cal-title"></span></div>
+                  <div class="cal-right-actions">
+                    <select class="cal-view-select" id="cal-view-select">
+                      <option value="month">Mensual</option>
+                      <option value="week">Semanal</option>
+                      <option value="year">Anual</option>
+                    </select>
+                    <div class="cal-nav">
+                      <button class="cal-btn" id="prev-month">‹</button>
+                      <button class="cal-btn" id="next-month">›</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="cal-weekdays" id="cal-weekdays">
+                  <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+                </div>
+                <div class="cal-grid" id="cal-grid"></div>
+                <div class="cal-week-grid" id="cal-week-grid" style="display:none"></div>
+                <div class="cal-year-grid" id="cal-year-grid" style="display:none"></div>
+                <div class="cal-stats" id="cal-stats"></div>
+              </div>
+            </div>
+            <div class="day-detail" id="day-detail">
+              <div class="dd-title">
+                <span id="dd-date-lbl">Selecciona un día</span>
+                <button class="pill pill-ghost" id="edit-all-btn">Editar todo el día</button>
+              </div>
+              <div id="dd-children"></div>
+            </div>
+          </div>
+          
+          <div class="side-col">
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title">👶 Mis Hijos</div>
+                <button class="btn btn-ghost btn-sm" id="sidebar-add-btn">+ Agregar</button>
+              </div>
+              <div class="children-list" id="children-sidebar"></div>
+            </div>
+            
+            <div class="card">
+              <div class="card-head">
+                <div class="card-title"><i class="fas fa-bell"></i> Alertas</div>
+                <button class="pill pill-ghost" id="see-all-notif">Ver todas</button>
+              </div>
+              <div class="notif-list" id="notif-preview"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bottom-grid">
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">📈 Pagos Semanales</div>
+              <span class="pill pill-ghost" id="pay-month-lbl"></span>
+            </div>
+            <div class="pay-table-wrap" id="pay-table"></div>
+          </div>
+          
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">🧮 Asistencia del Mes</div>
+              <span class="pill pill-ghost" id="donut-month-lbl"></span>
+            </div>
+            <div class="donut-outer" id="donut-wrap"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- CALENDARIO VIEW -->
+      <!-- ══════════════════════════════ -->
+      <div class="view" id="view-calendario">
+        <div class="card">
+          <div class="premium-calendar" id="cal-premium-2">
+            <div class="cal-left">
+              <div class="cal-left-top">
+                <div class="cal-left-day" id="cal2-left-dayname"></div>
+                <div class="cal-left-num" id="cal2-left-daynum"></div>
+                <div class="cal-left-month" id="cal2-left-monthyear"></div>
+              </div>
+              <button class="cal-left-btn" id="cal2-today-btn">Ir a hoy</button>
+            </div>
+            <div class="cal-right">
+              <div class="cal-right-head">
+                <div class="cal-right-title"><i class="fas fa-calendar-alt"></i> <span id="cal2-title"></span></div>
+                <div class="cal-right-actions">
+                  <select class="cal-view-select" id="cal2-view-select">
+                    <option value="month">Mensual</option>
+                    <option value="week">Semanal</option>
+                    <option value="year">Anual</option>
+                  </select>
+                  <div class="cal-nav">
+                    <button class="cal-btn" id="prev-month2">‹</button>
+                    <button class="cal-btn" id="next-month2">›</button>
+                  </div>
+                </div>
+              </div>
+              <div class="cal-weekdays" id="cal2-weekdays">
+                <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+              </div>
+              <div class="cal-grid" id="cal-grid2"></div>
+              <div class="cal-week-grid" id="cal2-week-grid" style="display:none"></div>
+              <div class="cal-year-grid" id="cal2-year-grid" style="display:none"></div>
+              <div class="cal-stats" id="cal2-stats"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- HIJOS VIEW -->
+      <!-- ══════════════════════════════ -->
+      <div class="view" id="view-hijos">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+          <div>
+            <div style="font-family:Sora,sans-serif;font-size:18px;font-weight:700">Mis Hijos Registrados</div>
+            <div style="font-size:12px;color:var(--text3);margin-top:2px">Gestiona información, tarifas y días de servicio</div>
+          </div>
+          <button class="btn btn-primary" id="hijos-add-btn">＋ Agregar hijo</button>
+        </div>
+        <div id="hijos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- PAGOS VIEW -->
+      <!-- ══════════════════════════════ -->
+      <div class="view" id="view-pagos">
+        <div id="pagos-content"></div>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- RESUMEN VIEW -->
+      <!-- ══════════════════════════════ -->
+      <div class="view" id="view-resumen">
+        <div id="resumen-content"></div>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- NOTIFICACIONES VIEW -->
+      <!-- ══════════════════════════════ -->
+      <div class="view" id="view-notificaciones">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+          <div style="font-family:Sora,sans-serif;font-size:18px;font-weight:700">Notificaciones 🔔</div>
+          <button class="btn btn-ghost btn-sm" id="mark-read-btn">Marcar todas leídas</button>
+        </div>
+        <div class="card" id="notif-full"></div>
+      </div>
+
+      <!-- ══════════════════════════════ -->
+      <!-- CONFIGURACION VIEW -->
+      <!-- ══════════════════════════════ -->
+      <div class="view" id="view-configuracion">
+        <div style="font-family:Sora,sans-serif;font-size:18px;font-weight:700;margin-bottom:16px">Configuración ⚙️</div>
+        <div class="card" style="padding:24px;max-width:480px">
+          <div style="font-size:14px;font-weight:700;margin-bottom:16px">Ajustes de la aplicación</div>
+          <div style="background:var(--primary-pale);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px">
+            <div style="font-size:13px;font-weight:700;color:var(--primary-dark);margin-bottom:6px">Guía rápida de uso</div>
+            <p style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:10px">
+              Aprende en 1 minuto cómo registrar días, pagos y ver reportes.
+            </p>
+            <button class="btn btn-ghost btn-sm" id="open-guide-btn"><i class="fas fa-circle-question"></i> Ver guía</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nombre del titular</label>
+            <input class="form-input" id="cfg-name" value="María González">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notificaciones de pagos</label>
+            <select class="form-input" id="cfg-notif">
+              <option>Activadas</option>
+              <option>Desactivadas</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Días de anticipación para recordar pago</label>
+            <input class="form-input" id="cfg-days" type="number" value="2" min="1" max="7">
+          </div>
+          <button class="btn btn-primary" id="save-cfg-btn">✓ Guardar configuración</button>
+          <button class="btn btn-ghost" id="open-app-info-btn" style="margin-top:10px"><i class="fas fa-circle-info"></i> Información de la aplicación</button>
+
+          <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+
+          <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--primary-dark)">Términos, políticas y uso</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+            <p style="font-size:12px;color:var(--text2);line-height:1.65;margin-bottom:10px">
+              <strong>Términos y condiciones:</strong> Al usar RutaKids aceptas un uso responsable de la plataforma,
+              el registro veraz de información y el cumplimiento de la normativa aplicable.
+            </p>
+            <p style="font-size:12px;color:var(--text2);line-height:1.65;margin-bottom:10px">
+              <strong>Política de privacidad y tratamiento de datos:</strong> La aplicación gestiona datos personales
+              únicamente para operar funcionalidades de rutas, asistencia y pagos. El tratamiento de datos se realiza
+              conforme a la normatividad vigente de protección de datos aplicable.
+            </p>
+            <p style="font-size:12px;color:var(--text2);line-height:1.65;margin-bottom:10px">
+              <strong>Uso gratuito:</strong> RutaKids es una aplicación de uso gratuito para sus funciones actuales.
+            </p>
+            <p style="font-size:12px;color:var(--text2);line-height:1.65;margin:0">
+              <strong>Aplicación hecha por Axon App.</strong>
+              Visita nuestra página y conoce más servicios en
+              <a href="https://www.axonapp.com.co/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;text-decoration:none">www.axonapp.com.co</a>.
+            </p>
+          </div>
+          
+          <hr style="margin:24px 0;border:none;border-top:1px solid var(--border)">
+          
+          <div style="font-size:14px;font-weight:700;margin-bottom:8px;color:var(--danger)">⚠️ Zona de peligro</div>
+          <p style="font-size:12px;color:var(--text3);line-height:1.5;margin-bottom:12px">
+            Borra toda la información guardada (hijos, estados, configuraciones) y reinicia la aplicación.
+          </p>
+          <button class="btn btn-danger" id="reset-data-btn">🗑️ Reiniciar y limpiar datos</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- MOBILE NAVIGATION -->
+  <!-- ══════════════════════════════ -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <div class="mn-item active" data-mn="dashboard">
+        <span><i class="fas fa-home"></i></span><span>Inicio</span>
+      </div>
+      <div class="mn-item" data-mn="calendario">
+        <span><i class="fas fa-calendar-alt"></i></span><span>Calendario</span>
+      </div>
+      <div class="mn-item" data-mn="hijos">
+        <span><i class="fas fa-users"></i></span><span>Hijos</span>
+      </div>
+      <div class="mn-item" data-mn="pagos">
+        <span><i class="fas fa-money-bill-wave"></i></span><span>Pagos</span>
+      </div>
+      <div class="mn-item" data-mn="resumen">
+        <span><i class="fas fa-chart-bar"></i></span><span>Resumen</span>
+      </div>
+      <div class="mn-item" data-mn="configuracion">
+        <span><i class="fas fa-gear"></i></span><span>Ajustes</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════ -->
+  <!-- MODALS -->
+  <!-- ══════════════════════════════ -->
+  
+  <!-- MODAL: AGREGAR/EDITAR HIJO -->
+  <div class="modal-overlay" id="modal-child" style="display:none">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="modal-title" id="mchild-title">Agregar Hijo <i class="fas fa-user-plus"></i></div>
+        <button class="modal-close" data-close="child"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <input type="hidden" id="f-id">
+      
+      <div class="form-group">
+        <label class="form-label">Nombre completo *</label>
+        <input class="form-input" id="f-name" list="names-list" placeholder="Ej. Laura Martínez" autocomplete="off">
+        <datalist id="names-list"></datalist>
+        <small style="font-size:10px;color:var(--text3);margin-top:4px;display:block"><i class="fas fa-lightbulb"></i> Selecciona de la lista o escribe un nuevo nombre</small>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Institución educativa *</label>
+        <input class="form-input" id="f-school" placeholder="Nombre del colegio">
+      </div>
+
+      <div class="form-error" id="child-error"></div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-dollar-sign"></i> Tarifa Ida</label>
+          <input class="form-input" id="f-in" type="number" placeholder="15000" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-dollar-sign"></i> Tarifa Regreso</label>
+          <input class="form-input" id="f-out" type="number" placeholder="15000" min="0">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Días de servicio</label>
+        <div class="days-picker">
+          <div class="dtoggle on" data-d="1">L</div>
+          <div class="dtoggle on" data-d="2">M</div>
+          <div class="dtoggle on" data-d="3">X</div>
+          <div class="dtoggle on" data-d="4">J</div>
+          <div class="dtoggle on" data-d="5">V</div>
+          <div class="dtoggle" data-d="6">S</div>
+          <div class="dtoggle" data-d="0">D</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Color identificador</label>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <div class="col-opt sel" data-col="blue" style="width:26px;height:26px;background:linear-gradient(135deg,#4c6ef5,#7048e8);border-radius:50%;cursor:pointer;border:3px solid var(--primary);"></div>
+          <div class="col-opt" data-col="green" style="width:26px;height:26px;background:linear-gradient(135deg,#12b886,#339af0);border-radius:50%;cursor:pointer;border:3px solid transparent;"></div>
+          <div class="col-opt" data-col="orange" style="width:26px;height:26px;background:linear-gradient(135deg,#f59f00,#f03e3e);border-radius:50%;cursor:pointer;border:3px solid transparent;"></div>
+          <div class="col-opt" data-col="pink" style="width:26px;height:26px;background:linear-gradient(135deg,#e64980,#7048e8);border-radius:50%;cursor:pointer;border:3px solid transparent;"></div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-ghost" style="flex:1" data-close="child">Cancelar</button>
+        <button class="btn btn-primary" style="flex:2" id="save-child-btn"><i class="fas fa-check"></i> Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR ESTADO -->
+  <div class="modal-overlay" id="modal-status" style="display:none">
+    <div class="modal" style="width:380px">
+      <div class="modal-head">
+        <div class="modal-title" id="mstatus-title">Estado del día <i class="fas fa-edit"></i></div>
+        <button class="modal-close" data-close="status"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <input type="hidden" id="s-cid">
+      <input type="hidden" id="s-date">
+      
+      <div style="background:var(--surface2);border-radius:11px;padding:12px;margin-bottom:14px" id="s-info"></div>
+      
+      <div class="form-group">
+        <label class="form-label">Asistencia</label>
+        <div class="status-row">
+            <div class="status-btn" data-s="att" data-v="asistio"><i class="fas fa-check"></i> Asistió</div>
+            <div class="status-btn" data-s="att" data-v="no"><i class="fas fa-times"></i> No asistió</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Estado de pago</label>
+        <div class="status-row">
+          <div class="status-btn" data-s="pay" data-v="pagado"><i class="fas fa-credit-card"></i> Pagado</div>
+          <div class="status-btn" data-s="pay" data-v="pendiente"><i class="fas fa-clock"></i> Pendiente</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Nota (opcional)</label>
+        <input class="form-input" id="s-nota" placeholder="Ej. Enfermo, salida temprana...">
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-ghost" style="flex:1" data-close="status">Cancelar</button>
+        <button class="btn btn-primary" style="flex:2" id="save-status-btn"><i class="fas fa-check"></i> Guardar estado</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EDITAR DÍA COMPLETO -->
+  <div class="modal-overlay" id="modal-day" style="display:none">
+    <div class="modal" style="width:680px">
+      <div class="modal-head">
+        <div class="modal-title" id="mday-title">Editar día</div>
+      </div>
+
+      <input type="hidden" id="d-date">
+      <div id="day-form-rows" class="day-form-rows"></div>
+
+      <div class="day-total-bar">
+        <span>Valor del día</span>
+        <strong id="day-total-val">$0</strong>
+      </div>
+
+      <div class="modal-footer" style="gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost" style="flex:1" data-close="day">Cancelar</button>
+        <button class="btn btn-danger" style="flex:1" id="clear-day-btn">🗑️ Limpiar día</button>
+        <button class="btn btn-primary" style="flex:2" id="save-day-btn"><i class="fas fa-save"></i> Guardar día</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRMAR ELIMINAR -->
+  <div class="modal-overlay" id="modal-del" style="display:none">
+    <div class="modal" style="width:340px">
+      <div class="modal-head">
+        <div class="modal-title">Eliminar hijo ⚠️</div>
+        <button class="modal-close" data-close="del">✕</button>
+      </div>
+      
+      <p style="font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px">
+        ¿Eliminar a <strong id="del-name"></strong>? Esta acción borrará todos sus registros y no se puede deshacer.
+      </p>
+      
+      <div class="modal-footer">
+        <button class="btn btn-ghost" style="flex:1" data-close="del">Cancelar</button>
+        <button class="btn btn-danger" style="flex:1" id="confirm-del-btn">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRMAR REINICIO -->
+  <div class="modal-overlay" id="modal-reset" style="display:none">
+    <div class="modal" style="width:480px">
+      <div class="modal-head" style="background:linear-gradient(135deg,#f03e3e,#c92a2a);color:#fff">
+        <div class="modal-title">⚠️ Advertencia de Reinicio del Sistema</div>
+        <button class="modal-close" data-close="reset" style="color:#fff;opacity:0.9"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <div style="padding:20px;font-size:13px;line-height:1.7">
+        <p style="color:var(--danger);font-weight:700;margin-bottom:14px;font-size:14px">
+          Esta operación eliminará de forma permanente e irreversible toda la información del sistema.
+        </p>
+        
+        <div style="background:var(--danger-pale);border-left:3px solid var(--danger);padding:12px 14px;border-radius:8px;margin-bottom:16px">
+          <div style="font-weight:700;margin-bottom:8px;color:var(--danger-dark)">Se eliminarán:</div>
+          <ul style="margin:0;padding-left:20px;color:var(--text2)">
+            <li>Todos los niños registrados</li>
+            <li>Historial completo de asistencias</li>
+            <li>Registro de pagos y pendientes</li>
+            <li>Configuraciones personalizadas</li>
+          </ul>
+        </div>
+        
+        <p style="color:var(--text2);font-size:12px;font-style:italic">
+          La aplicación se restaurará a su estado inicial con datos de demostración.
+        </p>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-ghost" style="flex:1" data-close="reset">Cancelar</button>
+        <button class="btn btn-danger" style="flex:1" id="confirm-reset-btn"><i class="fas fa-trash-alt"></i> Confirmar reinicio</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIRMAR LIMPIEZA DE DÍA -->
+  <div class="modal-overlay" id="modal-clear-day" style="display:none">
+    <div class="modal" style="width:400px">
+      <div class="modal-head" style="background:linear-gradient(135deg,#f59f00,#e67700);color:#fff">
+        <div class="modal-title">⚠️ Eliminar Registros del Día</div>
+        <button class="modal-close" data-close="clear-day" style="color:#fff;opacity:0.9"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <div style="padding:18px;font-size:13px;line-height:1.6">
+        <p style="color:var(--text);margin-bottom:12px">
+          ¿Está seguro de eliminar todos los registros de <strong id="clear-day-date">esta fecha</strong>?
+        </p>
+        
+        <div style="background:var(--warn-pale);border-left:3px solid var(--warn);padding:10px 12px;border-radius:8px;margin-bottom:12px">
+          <p style="margin:0;color:var(--warn-dark);font-size:12px">
+            <strong>Acción irreversible:</strong> Se perderán los datos de asistencia y pagos del día seleccionado para todos los niños.
+          </p>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-ghost" style="flex:1" data-close="clear-day">Cancelar</button>
+        <button class="btn btn-danger" style="flex:1" id="confirm-clear-day-btn"><i class="fas fa-eraser"></i> Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GUÍA DE USO -->
+  <div class="modal-overlay" id="modal-guide" style="display:none">
+    <div class="modal" style="width:520px">
+      <div class="modal-head">
+        <div class="modal-title">Bienvenido a RutaKids 👋</div>
+        <button class="modal-close" data-close="guide"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div style="padding:10px 2px 14px;font-size:13px;color:var(--text2);line-height:1.7">
+        <p style="margin-bottom:10px"><strong>¿Cómo funciona?</strong></p>
+        <ul style="margin:0 0 0 18px;padding:0;display:flex;flex-direction:column;gap:8px">
+          <li><strong>1. Agrega tus hijos</strong> con tarifas de ida y regreso.</li>
+          <li><strong>2. Marca los viajes diarios</strong> desde Calendario o "Editar día".</li>
+          <li><strong>3. Controla pagos</strong> en la sección Pagos (pendiente/pagado).</li>
+          <li><strong>4. Consulta métricas</strong> en Dashboard y Resúmenes.</li>
+          <li><strong>5. Exporta informes PDF</strong> por día, mes o año.</li>
+        </ul>
+      </div>
+
+      <div class="modal-footer" style="gap:8px">
+        <button class="btn btn-ghost" style="flex:1" data-close="guide">Cerrar</button>
+        <button class="btn btn-primary" style="flex:1.2" id="guide-got-it-btn"><i class="fas fa-check"></i> Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: INFORMACIÓN DE LA APLICACIÓN -->
+  <div class="modal-overlay" id="modal-app-info" style="display:none">
+    <div class="modal" style="width:560px">
+      <div class="modal-head">
+        <div class="modal-title">Información de RutaKids ℹ️</div>
+        <button class="modal-close" data-close="app-info"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div style="padding:10px 2px 14px;font-size:13px;color:var(--text2);line-height:1.7">
+        <p style="margin-bottom:10px"><strong>Lenguajes y tecnologías:</strong><br>HTML5, CSS3 y JavaScript (Vanilla JS), con arquitectura modular en frontend.</p>
+
+        <p style="margin-bottom:10px"><strong>Funciones principales:</strong><br>
+          Gestión de hijos, calendario de rutas, control de asistencia, control de pagos,
+          reportes y exportación PDF, notificaciones, modo oscuro/claro y configuración del usuario.
+        </p>
+
+        <p style="margin-bottom:10px"><strong>Base de datos conectada:</strong><br>
+          Supabase (PostgreSQL) para autenticación y sincronización de datos en la nube.
+        </p>
+
+        <p style="margin:0"><strong>Enlace oficial de la aplicación:</strong><br>
+          <a href="https://rutakids-app.web.app/" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;text-decoration:none">https://rutakids-app.web.app/</a>
+        </p>
+      </div>
+
+      <div class="modal-footer" style="gap:8px">
+        <button class="btn btn-primary" style="flex:1" data-close="app-info"><i class="fas fa-check"></i> Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EXPORTAR INFORME -->
+  <div class="modal-overlay" id="modal-export" style="display:none">
+    <div class="modal" style="width:420px">
+      <div class="modal-head">
+        <div class="modal-title">Exportar Informe PDF 📄</div>
+        <button class="modal-close" data-close="export"><i class="fas fa-times"></i></button>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Tipo de informe</label>
+        <select class="form-input" id="export-type">
+          <option value="day">Día específico</option>
+          <option value="month" selected>Mes completo</option>
+          <option value="year">Año completo</option>
+        </select>
+      </div>
+      
+      <div class="form-group" id="export-day-group">
+        <label class="form-label">Fecha</label>
+        <input class="form-input" id="export-date" type="date">
+      </div>
+      
+      <div class="form-group" id="export-month-group">
+        <label class="form-label">Mes</label>
+        <select class="form-input" id="export-month"></select>
+      </div>
+      
+      <div class="form-group" id="export-year-group">
+        <label class="form-label">Año</label>
+        <select class="form-input" id="export-year"></select>
+      </div>
+      
+      <div style="background:var(--primary-pale);border-radius:10px;padding:12px;margin:12px 0;font-size:12px;color:var(--primary-dark)">
+        📊 El informe incluirá: pagos, asistencias, ausencias y totales del período seleccionado.
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-ghost" style="flex:1" data-close="export">Cancelar</button>
+        <button class="btn btn-primary" style="flex:2" id="generate-pdf-btn"><i class="fas fa-file-pdf"></i> Generar PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: INSTALAR APLICACIÓN -->
+  <div class="modal-overlay" id="modal-install" style="display:none">
+    <div class="modal" style="width:420px">
+      <div class="modal-head">
+        <div class="modal-title">Instalar RutaKids</div>
+        <button class="modal-close" data-close="install"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div style="padding:8px 2px 14px">
+        <p id="install-modal-text" style="font-size:13px;color:var(--text2);line-height:1.65;margin:0">
+          ¿Deseas instalar RutaKids en tu celular para abrirla como app?
+        </p>
+      </div>
+
+      <div class="modal-footer" style="gap:8px">
+        <button class="btn btn-ghost" style="flex:1" id="install-continue-btn">Seguir en navegador</button>
+        <button class="btn btn-primary" style="flex:1.2" id="install-app-btn"><i class="fas fa-download"></i> Instalar app</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <!-- jsPDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/cloud.js"></script>
+  <script src="js/app.js"></script>
+  
+  <!-- PWA Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      let swRegistration;
+      let refreshing = false;
+
+      const refreshBtn = document.getElementById('refresh-app-btn');
+
+      const showRefreshButton = () => {
+        if (!refreshBtn) return;
+        refreshBtn.style.display = 'inline-flex';
+      };
+
+      const applyUpdate = async () => {
+        if (!refreshBtn) return;
+        refreshBtn.disabled = true;
+        refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Actualizando...';
+
+        try {
+          if (!swRegistration) {
+            swRegistration = await navigator.serviceWorker.getRegistration();
+          }
+
+          if (swRegistration) {
+            await swRegistration.update();
+
+            if (swRegistration.waiting) {
+              swRegistration.waiting.postMessage({ action: 'skipWaiting' });
+            }
+          }
+
+          if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames.map(name => caches.delete(name)));
+          }
+
+          setTimeout(() => window.location.reload(), 300);
+        } catch (error) {
+          console.error('Error actualizando app:', error);
+          refreshBtn.disabled = false;
+          refreshBtn.innerHTML = '<i class="fas fa-rotate"></i> Reintentar';
+        }
+      };
+
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', applyUpdate);
+      }
+
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      });
+
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(registration => {
+            swRegistration = registration;
+
+            if (registration.waiting) {
+              showRefreshButton();
+            }
+
+            registration.addEventListener('updatefound', () => {
+              const newWorker = registration.installing;
+              if (!newWorker) return;
+
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  showRefreshButton();
+                }
+              });
+            });
+
+            console.log('✅ Service Worker registrado');
+          })
+          .catch(err => console.log('❌ Service Worker error:', err));
+      });
+    }
+  </script>
+</body>
+</html>
